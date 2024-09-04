@@ -41,6 +41,40 @@ function mostraAlternativas() {
     for (const alternativa of perguntaAtual.alternativas) {
         const botaoAlternativas = document.createElement("button");
         botaoAlternativas.textContent = alternativa.texto;
+        botaoAlternativas.addEventListener("click",() => respostaSelecionada(alternativa));
+        caixaAlternativa.apenndChild(botaoAlternativas);
+    }  
+}
+
+function respostaSelecionada(opcaoSelecionada) {
+    const afirmacoes = aleatorio(opcaoSelecionada.afirmacao);
+    historiaFinal += afirmacoes + " ";
+    if (opcaoSelecionada.proxima !== indefinided) {
+        atual = opcaoSelecionada.proxima;
+    } else {
+        mostraResultado();
+        return;
     }
-    
+    mostraPergunta();
+}
+
+function mostraResultado() {
+    caixaPerguntas.textContent = `Em 2049 ${nome}`;
+    textoResultado.textContent = historiaFinal;
+    caixaAlternativa.textContent = "";
+    caixaAlternativa.classList.add("mostrar");
+    botaoJogarNovamente.addEventListener("click", jogaNovamente);
+}
+
+function jogaNovamente(){
+    atual = 0;
+    historiaFinal = "";
+    caixaResultado.classList.remove("mostrar");
+    mostraPergunta();
+}
+
+function substituiNome() {
+    for (const pergunta of perguntas) {
+        pergunta.enunciado = pergunta.enunciado.replace(/vocẽ/g. nome);
+    }
 }
